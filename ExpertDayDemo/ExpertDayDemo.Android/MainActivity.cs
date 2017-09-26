@@ -16,20 +16,7 @@ namespace ExpertDayDemo.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-
-
-
-
             base.OnCreate(bundle);
-
-            var messageBroker = new MessageBroker();
-
-            // Register a real instance of MessageBroker
-            Locator.CurrentMutable.RegisterConstant<IMessageBroker>(messageBroker);
-
-
-            messageBroker.Messages.Subscribe(s => System.Diagnostics.Debug.WriteLine(s));
-
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());

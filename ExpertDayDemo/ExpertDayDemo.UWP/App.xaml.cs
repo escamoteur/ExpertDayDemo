@@ -33,13 +33,6 @@ namespace ExpertDayDemo.UWP
             this.InitializeComponent();
 
 
-            var messageBroker = new MessageBroker();
-
-            // Register a real instance of MessageBroker
-            Locator.CurrentMutable.RegisterConstant<IMessageBroker>(messageBroker);
-
-
-            messageBroker.Messages.Subscribe(s => Debug.WriteLine(s));
 
 
 

@@ -152,10 +152,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MessageBroker\MessageBroker.csproj">
-      <Project>{6cca2aea-61d1-41a4-83a7-e009c2e9ac5e}</Project>
-      <Name>MessageBroker</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ExpertDayDemo\ExpertDayDemo.csproj">
       <Project>{226ee496-34d5-4e62-8acd-7657a6575014}</Project>
       <Name>ExpertDayDemo</Name>
