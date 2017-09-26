@@ -2,10 +2,9 @@
 
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+
 using Android.OS;
+using Splat;
 
 namespace ExpertDayDemo.Droid
 {
@@ -17,7 +16,20 @@ namespace ExpertDayDemo.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
+
+
+
+
             base.OnCreate(bundle);
+
+            var messageBroker = new MessageBroker();
+
+            // Register a real instance of MessageBroker
+            Locator.CurrentMutable.RegisterConstant<IMessageBroker>(messageBroker);
+
+
+            messageBroker.Messages.Subscribe(s => System.Diagnostics.Debug.WriteLine(s));
+
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());

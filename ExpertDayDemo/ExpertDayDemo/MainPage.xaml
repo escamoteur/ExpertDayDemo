@@ -4,10 +4,8 @@
              xmlns:local="clr-namespace:ExpertDayDemo"
              x:Class="ExpertDayDemo.MainPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout >
+            <Button Text="Send Message" Clicked="SendMessage" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,10 +1,13 @@
 ﻿{
   "dependencies": {
+    "LiveXAML": "1.2.47",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "Splat": "2.0.0",
+    "System.Reactive": "3.1.1",
     "Xamarin.Forms": "2.3.4.247"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10586": {}
   },
   "runtimes": {
     "win10-arm": {},
