@@ -30,7 +30,7 @@ namespace ExpertDayDemo
                                             {
                                                 Name =  city.Name,
                                                 Temperature = city.Main.Temp,
-                                                IconURL = city.Weather.FirstOrDefault() !=  null ? "http ://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png" : ""
+                                                IconURL = city.Weather.FirstOrDefault() !=  null ? "http://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png" : ""
                                             })
                         .ToList()
                             .ObserveOn(RxApp.MainThreadScheduler)
