@@ -11,5 +11,9 @@ namespace ExpertDayDemo
         public string Name { get; set; }
         public double Temperature { get; set; }
         public string IconURL { get; set; }
+
+        public string Name2 { get; set; }
+        public double Temperature2 { get; set; }
+        public string IconURL2 { get; set; }
     }
 }

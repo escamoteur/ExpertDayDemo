@@ -26,11 +26,16 @@ namespace ExpertDayDemo
 
             restAPI.GetWeather()
                 .SelectMany(cities => cities.List)
-                    .Select(city => new CityWeatherItemViewModel()
+                    .Buffer(2)
+                    .Select(cities => new CityWeatherItemViewModel()
                                             {
-                                                Name =  city.Name,
-                                                Temperature = city.Main.Temp,
-                                                IconURL = city.Weather.FirstOrDefault() !=  null ? "http://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png" : ""
+                                                Name = cities[0].Name,
+                                                Temperature = cities[0].Main.Temp,
+                                                IconURL = cities[0].Weather.FirstOrDefault() !=  null ? "http://openweathermap.org/img/w/" + cities[0].Weather.FirstOrDefault().Icon + ".png" : "",
+
+                                                Name2 = cities.Count > 1 ? cities[1].Name : "",
+                                                Temperature2 = cities.Count > 1 ? cities[1].Main.Temp : 0,
+                                                IconURL2 = cities.Count > 1 && cities[1].Weather.FirstOrDefault() !=  null ? "http://openweathermap.org/img/w/" + cities[1].Weather.FirstOrDefault().Icon + ".png" : ""
                                             })
                         .ToList()
                             .ObserveOn(RxApp.MainThreadScheduler)

@@ -6,14 +6,11 @@
 //
 // For POCOs visit quicktype.io?poco
 //
-namespace QuickType
+
+using Newtonsoft.Json;
+
+namespace ExpertDayDemo.REST_API
 {
-    using System;
-    using System.Net;
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
     public  class WeatherInCities
     {
         [JsonProperty("cnt")]
