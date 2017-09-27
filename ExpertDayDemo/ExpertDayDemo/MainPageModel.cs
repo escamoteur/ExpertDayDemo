@@ -22,19 +22,29 @@ namespace ExpertDayDemo
         public MainPageModel()
         {
 
+
+
+        }
+
+        public async Task LoadData()
+        {
             var restAPI = RestService.For<IWeatherAPI>("http://api.openweathermap.org");
 
-            restAPI.GetWeather()
-                .SelectMany(cities => cities.List)
-                    .Select(city => new CityWeatherItemViewModel()
-                                            {
-                                                Name =  city.Name,
-                                                Temperature = city.Main.Temp,
-                                                IconURL = city.Weather.FirstOrDefault() !=  null ? "http://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png" : ""
-                                            })
-                        .ToList()
-                            .ObserveOn(RxApp.MainThreadScheduler)
-                                .Subscribe(list => CityWeatherList = list);
+            var result = await restAPI.GetWeather();
+
+            List<CityWeatherItemViewModel> list = new List<CityWeatherItemViewModel>();
+
+            foreach (var city in result.Cities)
+            {
+                list.Add(new CityWeatherItemViewModel()
+                {
+                    Name = city.Name,
+                    Temperature = city.Main.Temp,
+                    IconURL = city.Weather.FirstOrDefault() != null ? "http://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png": ""
+                });
+            }
+
+            CityWeatherList = list;
 
 
         }

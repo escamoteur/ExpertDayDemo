@@ -17,5 +17,17 @@ namespace ExpertDayDemo
         {
             InitializeComponent();
         }
+
+
+        protected override async void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (BindingContext != null)
+            {
+                await ((MainPageModel) BindingContext).LoadData();
+            }
+        }
     }
+
+   
 }

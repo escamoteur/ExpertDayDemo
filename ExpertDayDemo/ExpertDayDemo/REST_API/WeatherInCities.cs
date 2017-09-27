@@ -26,10 +26,10 @@ namespace QuickType
         public long Cod { get; set; }
 
         [JsonProperty("list")]
-        public List[] List { get; set; }
+        public List<City> Cities { get; set; }
     }
 
-    public  class List
+    public  class City
     {
         [JsonProperty("id")]
         public long Id { get; set; }
