@@ -25,7 +25,7 @@ namespace ExpertDayDemo
             var restAPI = RestService.For<IWeatherAPI>("http://api.openweathermap.org");
 
             restAPI.GetWeather()
-                .SelectMany(cities => cities.List)
+                .SelectMany(result => result.Cities)
                     .Select(city => new CityWeatherItemViewModel()
                                             {
                                                 Name =  city.Name,

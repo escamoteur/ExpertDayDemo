@@ -4,7 +4,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QuickType;
 using Refit;
 
 namespace ExpertDayDemo.REST_API
