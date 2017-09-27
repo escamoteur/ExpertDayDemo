@@ -14,12 +14,5 @@ namespace ExpertDayDemo
         {
             InitializeComponent();
         }
-
-        private void SendMessage(object sender, EventArgs e)
-        {
-            var broker = Locator.Current.GetService<IMessageBroker>();
-
-            broker.QueueMessage("From PCL Project");
-        }
     }
 }

@@ -4,8 +4,15 @@
              xmlns:local="clr-namespace:ExpertDayDemo"
              x:Class="ExpertDayDemo.MainPage">
     <ContentPage.Content>
-        <StackLayout >
-            <Button Text="Send Message" Clicked="SendMessage" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"/>
-        </StackLayout>
+        <ListView x:Name="CityListView" ItemsSource="{Binding CityWeatherList}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                <ViewCell>
+                    <Label Text="{Binding Name}"/>
+                </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    
     </ContentPage.Content>
 </ContentPage>

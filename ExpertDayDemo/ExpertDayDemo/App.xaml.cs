@@ -13,7 +13,12 @@ namespace ExpertDayDemo
         {
             InitializeComponent();
 
-            MainPage = new ExpertDayDemo.MainPage();
+            var mainPageModel = new MainPageModel();
+
+            var mainPage = new ExpertDayDemo.MainPage();
+            mainPage.BindingContext = mainPageModel;
+
+            MainPage = mainPage;
         }
 
         protected override void OnStart()
