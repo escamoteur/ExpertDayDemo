@@ -151,12 +151,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExpertDayDemo\ExpertDayDemo.csproj">
-      <Project>{226ee496-34d5-4e62-8acd-7657a6575014}</Project>
-      <Name>ExpertDayDemo</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

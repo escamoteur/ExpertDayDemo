@@ -21,22 +21,27 @@ namespace ExpertDayDemo
 
         public MainPageModel()
         {
+            UpdateWeather();
+        }
 
+        public void UpdateWeather()
+        {
             var restAPI = RestService.For<IWeatherAPI>("http://api.openweathermap.org");
 
             restAPI.GetWeather()
                 .SelectMany(result => result.Cities)
-                    .Select(city => new CityWeatherItemViewModel()
-                                            {
-                                                Name =  city.Name,
-                                                Temperature = city.Main.Temp,
-                                                IconURL = city.Weather.FirstOrDefault() !=  null ? "http://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png" : ""
-                                            })
-                        .ToList()
-                            .ObserveOn(RxApp.MainThreadScheduler)
-                                .Subscribe(list => CityWeatherList = list);
-
-
+                .Select(city => new CityWeatherItemViewModel()
+                {
+                    Name = city.Name,
+                    Temperature = city.Main.Temp,
+                    Icon = city.Weather.FirstOrDefault() != null
+                        ?  city.Weather.FirstOrDefault().Icon
+                        : ""
+                })
+                .ToList()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(list => CityWeatherList = list);
         }
     }
 }
+
