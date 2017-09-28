@@ -7,7 +7,7 @@
         <ListView x:Name="CityListView" ItemsSource="{Binding CityWeatherList}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <local:CityWeatherItemView ViewModel ="{Binding .}"/>
+                    <local:CityWeatherItemView />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
