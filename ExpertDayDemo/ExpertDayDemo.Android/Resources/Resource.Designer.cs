@@ -26,6 +26,9 @@ namespace ExpertDayDemo.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::ReactiveUI.Fody.Helpers.Resource.String.ApplicationName = global::ExpertDayDemo.Droid.Resource.String.ApplicationName;
+			global::ReactiveUI.Fody.Helpers.Resource.String.Hello = global::ExpertDayDemo.Droid.Resource.String.Hello;
+			global::ReactiveUI.Fody.Helpers.Resource.String.library_name = global::ExpertDayDemo.Droid.Resource.String.library_name;
 			global::Splat.Resource.String.library_name = global::ExpertDayDemo.Droid.Resource.String.library_name;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::ExpertDayDemo.Droid.Resource.Attribute.actionBarSize;
 		}
@@ -3625,6 +3628,12 @@ namespace ExpertDayDemo.Droid
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f090040
+			public const int ApplicationName = 2131296320;
+			
+			// aapt resource value: 0x7f09003f
+			public const int Hello = 2131296319;
 			
 			// aapt resource value: 0x7f090015
 			public const int abc_action_bar_home_description = 2131296277;

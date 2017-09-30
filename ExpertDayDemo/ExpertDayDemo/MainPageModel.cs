@@ -18,30 +18,67 @@ namespace ExpertDayDemo
     public class MainPageModel : ReactiveObject
     {
         [Reactive]
+        public IObservable<bool> CanFilter { get; set; }
+
+        [Reactive]
         public IEnumerable<CityWeatherItemViewModel> CityWeatherList { get; set; }
 
         [Reactive]
         public string SearchText { get; set; }
 
-
-        public ReactiveCommand<Unit,Unit>   UpdateCommand { get; set; }
+        public ReactiveCommand<Unit, IList<CityWeatherItemViewModel>>   UpdateCommand { get; set; }
         public ReactiveCommand<string, Unit> FilterCommand { get; set; }
+
+        public ReactiveCommand<Unit, Unit> DoSomeImportantOtherTaskCommand { get; set; }
+
 
 
 
         public MainPageModel()
         {
-            UpdateWeather();
+            UpdateWeather()
+                .Subscribe(list => CityWeatherList = list);
+
+            // Add some pseudo time based event    
+            var TickEvent = Observable.Interval(TimeSpan.FromMilliseconds(5000));
+                
+
+            TickEvent
+                .Subscribe(_ => Debug.WriteLine("Timer Event"));
 
 
-            FilterCommand = ReactiveCommand.CreateFromTask<string>(async name => await FilterCities(name));
+            // Create Commands -----------------------------------------------
+
+            UpdateCommand = ReactiveCommand.CreateFromObservable(() => UpdateWeather(SearchText));
+
+            UpdateCommand
+                .Subscribe(list => CityWeatherList = list);
 
 
-            UpdateCommand = ReactiveCommand.Create(() => UpdateWeather(SearchText),
-                FilterCommand.IsExecuting.Select(b => !b));
+            DoSomeImportantOtherTaskCommand = ReactiveCommand.CreateFromTask(async () => await DoSomethingImportant());
+ 
+            TickEvent
+                .Subscribe(REST_API => DoSomeImportantOtherTaskCommand.Execute().Subscribe());
 
 
-            // Filter changes
+
+
+
+            //we want to prevent that any command is executed while one of the others is running
+            CanFilter = DoSomeImportantOtherTaskCommand.IsExecuting
+                .Merge(UpdateCommand.IsExecuting)
+                    .DistinctUntilChanged()
+                        .Select(b => !b);
+
+            CanFilter.Subscribe(b => Debug.WriteLine("CanFilter: " + b));
+    
+            FilterCommand = ReactiveCommand.CreateFromTask<string>(async name => await FilterCities(name), CanFilter);
+
+
+
+
+
+            // Filter changes ------------------------------------------------------------------------------
             IObservable<string> TextChanging = this.WhenAnyValue(x => x.SearchText)
                 .Throttle(TimeSpan.FromMilliseconds(500));
                     
@@ -50,12 +87,11 @@ namespace ExpertDayDemo
                 .InvokeCommand(FilterCommand);
 
 
+        }
 
-
-
-            UpdateCommand.IsExecuting
-                .Subscribe(busy => Debug.WriteLine("Update running: " + busy.ToString()));
-
+        private async Task DoSomethingImportant()
+        {
+            await Task.Delay(300);
 
         }
 
@@ -66,25 +102,26 @@ namespace ExpertDayDemo
 
         }
 
-        public void UpdateWeather(string filter = "")
+        public IObservable<IList<CityWeatherItemViewModel>> UpdateWeather(string filter = "")
         {
             // We are using Refit to make the REST call
             var restAPI = RestService.For<IWeatherAPI>("http://api.openweathermap.org");
 
-            restAPI.GetWeather()
-                .SelectMany(result => result.Cities)
-                    .Where(city => string.IsNullOrWhiteSpace(filter) || city.Name.ToUpper().Contains(filter.ToUpper()) )
-                        .Select(city => new CityWeatherItemViewModel()
-                        {
-                            Name = city.Name,
-                            Temperature = city.Main.Temp,
-                            Icon = city.Weather.FirstOrDefault() != null
-                                ?  city.Weather.FirstOrDefault().Icon
-                                : ""
-                        })
-                        .ToList()
-                        .ObserveOn(RxApp.MainThreadScheduler)
-                        .Subscribe(list => CityWeatherList = list);
+            return restAPI.GetWeather()
+                .Delay(TimeSpan.FromSeconds(1)) // Just to make it a bit slower so that we can see the disabling of the control
+               .SelectMany(result => result.Cities)
+                .Where(city => string.IsNullOrWhiteSpace(filter) || city.Name.ToUpper().Contains(filter.ToUpper()))
+                .Select(city => new CityWeatherItemViewModel()
+                {
+                    Name = city.Name,
+                    Temperature = city.Main.Temp,
+                    Icon = city.Weather.FirstOrDefault() != null
+                        ? city.Weather.FirstOrDefault().Icon
+                        : ""
+                })
+                .ToList()
+                .ObserveOn(RxApp.MainThreadScheduler);
+
         }
     }
 }
