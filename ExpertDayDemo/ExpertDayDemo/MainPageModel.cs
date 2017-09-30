@@ -23,6 +23,8 @@ namespace ExpertDayDemo
         [Reactive]
         public IEnumerable<CityWeatherItemViewModel> CityWeatherList { get; set; }
 
+        public IEnumerable<CityWeatherItemViewModel> LastUpdatedList { get; set; }
+
         [Reactive]
         public string SearchText { get; set; }
 
@@ -37,7 +39,11 @@ namespace ExpertDayDemo
         public MainPageModel()
         {
             UpdateWeather()
-                .Subscribe(list => CityWeatherList = list);
+                .Subscribe(list =>
+                {
+                    LastUpdatedList = list;
+                    CityWeatherList = list;
+                });
 
             // Add some pseudo time based event    
             var TickEvent = Observable.Interval(TimeSpan.FromMilliseconds(5000));
@@ -49,16 +55,18 @@ namespace ExpertDayDemo
 
             // Create Commands -----------------------------------------------
 
-            UpdateCommand = ReactiveCommand.CreateFromObservable(() => UpdateWeather(SearchText));
-
+            UpdateCommand = ReactiveCommand.CreateFromObservable(() => UpdateWeather());
             UpdateCommand
                 .Subscribe(list => CityWeatherList = list);
 
+            UpdateCommand.ThrownExceptions.Subscribe(exception => Debug.WriteLine(exception.Message));
+
 
             DoSomeImportantOtherTaskCommand = ReactiveCommand.CreateFromTask(async () => await DoSomethingImportant());
- 
+            DoSomeImportantOtherTaskCommand.ThrownExceptions.Subscribe(exception => Debug.WriteLine(exception.Message));
+
             TickEvent
-                .Subscribe(REST_API => DoSomeImportantOtherTaskCommand.Execute().Subscribe());
+                .Subscribe(_ => DoSomeImportantOtherTaskCommand.Execute().Subscribe());
 
 
 
@@ -81,6 +89,7 @@ namespace ExpertDayDemo
             // Filter changes ------------------------------------------------------------------------------
             IObservable<string> TextChanging = this.WhenAnyValue(x => x.SearchText)
                 .Throttle(TimeSpan.FromMilliseconds(500));
+               
                     
 
             TextChanging
@@ -97,26 +106,27 @@ namespace ExpertDayDemo
 
         private async Task FilterCities(string filter)
         {
-            await Task.Delay(1000);
-            CityWeatherList = CityWeatherList.Where(city => string.IsNullOrWhiteSpace(filter) || city.Name.ToUpper().Contains(filter.ToUpper()));
-
+            if (CityWeatherList != null)
+            {
+                CityWeatherList = LastUpdatedList.Where(city => string.IsNullOrWhiteSpace(filter) || city.Name.ToUpper().Contains(filter.ToUpper()));
+            }
         }
 
-        public IObservable<IList<CityWeatherItemViewModel>> UpdateWeather(string filter = "")
+        public IObservable<IList<CityWeatherItemViewModel>> UpdateWeather()
         {
             // We are using Refit to make the REST call
             var restAPI = RestService.For<IWeatherAPI>("http://api.openweathermap.org");
 
+            SearchText = "";
+
             return restAPI.GetWeather()
                 .Delay(TimeSpan.FromSeconds(1)) // Just to make it a bit slower so that we can see the disabling of the control
                .SelectMany(result => result.Cities)
-                .Where(city => string.IsNullOrWhiteSpace(filter) || city.Name.ToUpper().Contains(filter.ToUpper()))
                 .Select(city => new CityWeatherItemViewModel()
                 {
                     Name = city.Name,
                     Temperature = city.Main.Temp,
-                    Icon = city.Weather.FirstOrDefault() != null
-                        ? city.Weather.FirstOrDefault().Icon
+                    Icon = city.Weather.FirstOrDefault() != null ? city.Weather.FirstOrDefault().Icon
                         : ""
                 })
                 .ToList()

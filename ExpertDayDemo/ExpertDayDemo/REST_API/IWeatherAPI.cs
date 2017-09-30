@@ -10,7 +10,7 @@ namespace ExpertDayDemo.REST_API
 {
     public interface IWeatherAPI
     {
-        [Get("/data/2.5/box/city?bbox=6,47,14,54,20&appid=27ac337102cc4931c24ba0b50aca6bbd")]
+        [Get("/data/2.5/box/city?bbox=5,47,14,54,20&appid=27ac337102cc4931c24ba0b50aca6bbd")]
         IObservable<WeatherInCities> GetWeather();
     }
 }
