@@ -8,14 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using ExpertDayDemo.REST_API;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Refit;
 
 namespace ExpertDayDemo
 {
-    public class MainPageModel : INotifyPropertyChanged
+    public class MainPageModel : ReactiveObject
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        [Reactive]
         public IEnumerable<CityWeatherItemViewModel> CityWeatherList { get; set; }
 
 
