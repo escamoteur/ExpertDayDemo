@@ -6,6 +6,7 @@
              x:Class="ExpertDayDemo.MainPage" BackgroundColor="LightBlue">
     <ContentPage.Content>
         <StackLayout>
+            <Entry x:Name="SearchText" VerticalOptions="Start"/>
             <ListView x:Name="CityListView" ItemsSource="{Binding CityWeatherList}" VerticalOptions="StartAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>

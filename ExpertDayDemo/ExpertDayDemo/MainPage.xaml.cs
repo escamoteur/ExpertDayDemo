@@ -20,6 +20,7 @@ namespace ExpertDayDemo
 
             this.WhenActivated(d =>
             {
+                this.Bind(ViewModel, vm => vm.SearchText, v => v.SearchText.Text);
                 this.BindCommand(ViewModel, vm => vm.UpdateCommand, v => v.UpdateBtn);
             });
 
