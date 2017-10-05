@@ -34,13 +34,15 @@ namespace ExpertDayDemo
                 {
                     Name = city.Name,
                     Temperature = city.Main.Temp,
-                    Icon = city.Weather.FirstOrDefault() != null
-                        ?  city.Weather.FirstOrDefault().Icon
-                        : ""
+                    IconURL = city.Weather.FirstOrDefault() != null ? "http://openweathermap.org/img/w/" + city.Weather.FirstOrDefault().Icon + ".png" : ""
+
                 })
                 .ToList()
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(list => CityWeatherList = list);
+                .Subscribe(list =>
+                {
+                    CityWeatherList = list;
+                });
         }
     }
 }

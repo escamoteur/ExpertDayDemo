@@ -10,6 +10,6 @@ namespace ExpertDayDemo
     {
         public string Name { get; set; }
         public double Temperature { get; set; }
-        public string Icon { get; set; }
+        public string IconURL { get; set; }
     }
 }

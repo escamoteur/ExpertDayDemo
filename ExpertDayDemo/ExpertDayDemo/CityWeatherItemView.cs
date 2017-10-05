@@ -21,18 +21,17 @@ namespace ExpertDayDemo
             {
                 this.OneWayBind(ViewModel, vm => vm.Name, v => v.CityName.Text);
 
-                this.OneWayBind(ViewModel, vm => vm.Temperature, v => v.Temperature.Text, value => Convert.ToString(value,new CultureInfo("de-DE")) + "°" );
+                this.OneWayBind(ViewModel, vm => vm.Temperature, v => v.Temperature.Text);
 
-                this.OneWayBind(ViewModel, vm => vm.Icon, v => v.WeatherIcon.Source,iconID => "http://openweathermap.org/img/w/" + iconID + ".png");
+                this.OneWayBind(ViewModel, vm => vm.IconURL, v => v.WeatherIcon.Source);
 
             });
 
         }
 
-
-
-
-
-
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+        }
     }
 }
