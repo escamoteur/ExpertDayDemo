@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -23,9 +24,10 @@ namespace ExpertDayDemo
 
                 this.OneWayBind(ViewModel, vm => vm.Temperature, v => v.Temperature.Text);
 
-                this.OneWayBind(ViewModel, vm => vm.IconURL, v => v.WeatherIcon.Source);
+                // Add ImageBinding here
 
             });
+
 
         }
 
