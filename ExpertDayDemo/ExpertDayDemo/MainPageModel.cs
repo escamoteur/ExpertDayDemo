@@ -63,7 +63,6 @@ namespace ExpertDayDemo
 
 
             DoSomeImportantOtherTaskCommand = ReactiveCommand.CreateFromTask(async () => await DoSomethingImportant());
-            DoSomeImportantOtherTaskCommand.ThrownExceptions.Subscribe(exception => Debug.WriteLine(exception.Message));
 
             TickEvent
                 .Subscribe(_ => DoSomeImportantOtherTaskCommand.Execute().Subscribe());
